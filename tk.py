@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 #from win_one import display_win
-
+win = tk.Tk()
+win.title('GPA Calculator')
+win.geometry('900x750+0+0')
 #-------------GPA Functions--------------
 global trans_gpa
 global core_gpa
@@ -9,7 +11,12 @@ global cur_gpa
 global cur_cor_gpa
 global predicted_gpa
 global predicted_cor_gpa
-classes = []
+global mainF
+
+global classes
+global GPA_sum
+global num_classes
+
 """trans_gpa = tk.StringVar()
 core_gpa = tk.StringVar()
 cur_gpa = tk.StringVar()
@@ -27,21 +34,6 @@ def display_gpa():
   print("Current core GPA: " + str(cur_cor_gpa))
   print("Predicted GPA: " + str(predicted_gpa))
 
-  """
-def gpa_data():
-  global trans_gpa
-  global core_gpa
-  global cur_gpa
-  global cur_cor_gpa
-  global predicted_gpa
-  global predicted_cor_gpa
-  cur_gpa = cur_textbox.get()
-  trans_gpa = trans_textbox.get()
-  core_gpa = core_textbox.get()
-  cur_gpa = cur_textbox.get()
-  cur_cor_gpa = cur_cor_textbox.get()
-  #print("Data added successfully!")
-"""
 
 def calc_cur_gpa():
   my_sum = 0.0
@@ -73,42 +65,88 @@ def gpa_prediction():
   elif choice == 2:
     gpa_data()
 
+#---------------------Predict Frame--------------------------
+def predict_win():
+    predF = tk.Frame(win, bg='green')
+    predF.place(relwidth=1, relheight=1)
+
+#---------------------Calculate Frame-----------------------
+
+def calculate_win():
+    global classes
+    global GPA_sum
+    global num_classes
+
+    classes=[]
+    GPA_sum = tk.StringVar()
+    num_classes = tk.StringVar()
+
+
+    calcF = tk.Frame(win, bg='green')
+    calcF.place(relwidth=1, relheight=1)
+    calcF.columnconfigure(0, weight=1)
+    calcF.rowconfigure(0, weight=1)
+    calcF.rowconfigure(1, weight=1)
+    calcF.rowconfigure(2, weight=1)
+
+
+
+    frameL = ttk.Label(win, text='Enter Number of Classes')
+    frameL.grid(column=0, row=0, sticky=tk.EW, padx=5, pady=5)
+
+    txt1 = ttk.Entry(win, textvariable=num_classes)
+    txt1.grid(column=0, row=1, sticky=tk.EW, padx=5, pady=5)
+
+    cont_btn = ttk.Button(win, text='Continue', command=display)
+    cont_btn.grid(column=0, row=2, sticky=tk.EW, padx=5, pady=5)
+
+
 
 #--------------------Display Window--------------------------
 def display_win():
   
   #gpa_data()
-  dis_win = tk.Tk()
-  dis_win.title('Display GPA')
-  dis_win.geometry('900x750+0+0')
+  disF = tk.Frame(win, bg='gray')
+  disF.columnconfigure(0, weight=1)
+  disF.columnconfigure(1, weight=1)
+  disF.rowconfigure(0, weight=1)
+  disF.rowconfigure(1, weight=1)
+  disF.rowconfigure(2, weight=1)
+  disF.rowconfigure(3, weight=1)
+  disF.rowconfigure(4, weight=1)
+  disF.rowconfigure(5, weight=1)
+  disF.rowconfigure(6, weight=1)
+  disF.place(relwidth=1, relheight=1)
+  
+  disF.tkraise()
   
   #-------------GPA Labels-------------
 
-  lbl1 = ttk.Label(dis_win, text='Transcript GPA: ' + trans_gpa.get())
-  lbl1.pack()
+  lbl1 = ttk.Label(win, text='Transcript GPA: ' + trans_gpa.get())
+  lbl1.grid(column=0, row=0, sticky=tk.EW, padx=5, pady=5)
   
-  lbl2 = ttk.Label(dis_win, text='Core GPA: ' + core_gpa.get())
-  lbl2.pack()
+  lbl2 = ttk.Label(win, text='Core GPA: ' + core_gpa.get())
+  lbl2.grid(column=0, row=1, sticky=tk.EW, padx=5, pady=5)
 
-  lbl3 = ttk.Label(dis_win, text='Current GPA: ' + cur_gpa.get())
-  lbl3.pack()
+  lbl3 = ttk.Label(win, text='Current GPA: ' + cur_gpa.get())
+  lbl3.grid(column=0, row=2, sticky=tk.EW, padx=5, pady=5)
 
-  lbl4 = ttk.Label(dis_win, text='Current Core GPA: ' + cur_cor_gpa.get())
-  lbl4.pack()
+  lbl4 = ttk.Label(win, text='Current Core GPA: ' + cur_cor_gpa.get())
+  lbl4.grid(column=0, row=3, sticky=tk.EW, padx=5, pady=5)
 
-  lbl5 = ttk.Label(dis_win, text='Predicted GPA: ' + predicted_gpa.get())
-  lbl5.pack()
+  lbl5 = ttk.Label(win, text='Predicted GPA: ' + predicted_gpa.get())
+  lbl5.grid(column=0, row=4, sticky=tk.EW, padx=5, pady=5)
 
-  lbl6 = ttk.Label(dis_win, text='Predicted Core GPA: ' + predicted_cor_gpa.get())
-  lbl6.pack()
+  lbl6 = ttk.Label(win, text='Predicted Core GPA: ' + predicted_cor_gpa.get())
+  lbl6.grid(column=0, row=5, sticky=tk.EW, padx=5, pady=5)
 
-  main_btn = ttk.Button(dis_win, text='Main Menu', command=main_win)
-  main_btn.pack()
+  main_btn = ttk.Button(win, text='Main Menu', command=main_win)
+  main_btn.grid(column=0, row=6, sticky=tk.EW, padx=5, pady=5)
 
-  dis_win.mainloop()
 #------------------Function Merge-----------------
 def display():
   display_win()
+
 
 #------------------Input Window--------------------
 def input_win():
@@ -118,9 +156,6 @@ def input_win():
   global cur_cor_gpa
   global predicted_gpa
   global predicted_cor_gpa
-  win = tk.Tk()
-  win.title('GPA Input')
-  win.geometry('900x750+0+0')
 
   trans_gpa = tk.StringVar()
   core_gpa = tk.StringVar()
@@ -129,72 +164,100 @@ def input_win():
   predicted_gpa = tk.StringVar()
   predicted_cor_gpa = tk.StringVar()
 
+  inputF = tk.Frame(win, bg='gray')
+  inputF.columnconfigure(0, weight=1)
+  inputF.columnconfigure(1, weight=1)
+  inputF.columnconfigure(2, weight=1)
+  inputF.rowconfigure(0, weight=1)
+  inputF.rowconfigure(1, weight=1)
+  inputF.rowconfigure(2, weight=1)
+  inputF.rowconfigure(3, weight=1)
+  inputF.rowconfigure(4, weight=1)
+  inputF.rowconfigure(5, weight=1)
+  inputF.rowconfigure(6, weight=1)
+  inputF.place(relwidth=1, relheight=1)
+  
+  inputF.tkraise()
+
   trans_lbl = ttk.Label(win, text='Transcript GPA') #lbl
-  trans_lbl.pack()
+  trans_lbl.grid(column=0, row=0, sticky=tk.EW, padx=5, pady=5)
 
   trans_textbox = ttk.Entry(win, textvariable = trans_gpa) #txt
-  trans_textbox.pack()
+  trans_textbox.grid(column=1, row=0, sticky=tk.EW, padx=5, pady=5)
 
   core_lbl = ttk.Label(win, text='Core GPA') #lbl
-  core_lbl.pack()
+  core_lbl.grid(column=0, row=1, sticky=tk.EW, padx=5, pady=5)
 
   core_textbox = ttk.Entry(win, textvariable = core_gpa)#txt
-  core_textbox.pack()
+  core_textbox.grid(column=1, row=1, sticky=tk.EW, padx=5, pady=5)
 
   cur_lbl = ttk.Label(win, text='Current GPA') #lbl
-  cur_lbl.pack()
+  cur_lbl.grid(column=0, row=2, sticky=tk.EW, padx=5, pady=5)
 
   cur_textbox = ttk.Entry(win, textvariable = cur_gpa)
-  cur_textbox.pack()
+  cur_textbox.grid(column=1, row=2, sticky=tk.EW, padx=5, pady=5)
 
   cur_cor_lbl = ttk.Label(win, text='Current Core GPA') #lbl
-  cur_cor_lbl.pack()
+  cur_cor_lbl.grid(column=0, row=3, sticky=tk.EW, padx=5, pady=5)
 
   cur_cor_textbox = ttk.Entry(win, textvariable = cur_cor_gpa)
-  cur_cor_textbox.pack()
+  cur_cor_textbox.grid(column=1, row=3, sticky=tk.EW, padx=5, pady=5)
 
   predict_lbl = ttk.Label(win, text='Predicted GPA') #lbl
-  predict_lbl.pack()
+  predict_lbl.grid(column=0, row=4, sticky=tk.EW, padx=5, pady=5)
 
   predict_textbox = ttk.Entry(win, textvariable = predicted_gpa)
-  predict_textbox.pack()
+  predict_textbox.grid(column=1, row=4, sticky=tk.EW, padx=5, pady=5)
 
   predict_cor_lbl = ttk.Label(win, text='Predicted Core GPA') #lbl
-  predict_cor_lbl.pack()
+  predict_cor_lbl.grid(column=0, row=5, sticky=tk.EW, padx=5, pady=5)
 
   predict_cor_txtbox = ttk.Entry(win, textvariable = predicted_cor_gpa)
-  predict_cor_txtbox.pack()
-
-  #submit_btn = ttk.Button(win, text='Submit', command=gpa_data)
-  #submit_btn.pack()
+  predict_cor_txtbox.grid(column=1, row=5, sticky=tk.EW, padx=5, pady=5)
 
   continue_btn = ttk.Button(win, text='Continue', command=display_win)
-  continue_btn.pack()
+  continue_btn.grid(column=0, row=6, sticky=tk.EW, padx=5, pady=5)
 
   main_btn = ttk.Button(win, text='Main Menu', command=main_win)
-  main_btn.pack()
+  main_btn.grid(column=1, row=6, sticky=tk.EW, padx=5, pady=5)
 
-  win.mainloop()
+  predict_btn = ttk.Button(win, text='Predict GPA', command=predict_win)
+  predict_btn.grid(column=2, row=6, sticky=tk.EW, padx=5, pady=5)
+
+
 
 
 def main_win():
-  main = tk.Tk()
-  main.title('GPA Calculator')
-  main.geometry('900x750+0+0')
+  global mainF
+  mainF = tk.Frame(win, bg='gray')
+  mainF.columnconfigure(0, weight=5)
+  mainF.rowconfigure(0, weight=1)
+  mainF.rowconfigure(1, weight=1)
+  mainF.rowconfigure(2, weight=1)
+  mainF.place(relwidth=1, relheight=1)
+
+  mainF.tkraise()
 
   #-------------Buttons-------------
-  input_btn = ttk.Button(main, text='Input GPA Data', command=input_win)
-  input_btn.pack(side=tk.TOP)
+  input_btn = ttk.Button(win, text='Input GPA Data', command=input_win)
+  input_btn.grid(column=0, row=0, sticky=tk.EW, padx=5, pady=5)
 
-  display_btn = ttk.Button(main, text='Display GPA Data', command=display_win)
-  display_btn.pack()
+  display_btn = ttk.Button(win, text='Display GPA Data', command=display_win)
+  display_btn.grid(column=0, row=1, sticky=tk.EW, padx=5, pady=5)
 
-  main.mainloop()
+  calc_btn = ttk.Button(win, text='Calculate Current GPA', command=calculate_win)
+  calc_btn.grid(column=0, row=2, sticky=tk.EW, padx=5, pady=5)
+
+
+  
+
+
   
 
 #input_win()
 main_win()
-
+win.mainloop()
 
 #options()
 #https://www.pythontutorial.net/tkinter/tkinter-label/
+
