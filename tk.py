@@ -5,17 +5,20 @@ win = tk.Tk()
 win.title('GPA Calculator')
 win.geometry('900x750+0+0')
 #-------------GPA Functions--------------
+"""
 global trans_gpa
 global core_gpa
 global cur_gpa
 global cur_cor_gpa
 global predicted_gpa
+global predicted_gpa_sem
 global predicted_cor_gpa
 global mainF
 
 global classes
 global GPA_sum
 global num_classes
+"""
 
 """trans_gpa = tk.StringVar()
 core_gpa = tk.StringVar()
@@ -24,7 +27,7 @@ cur_cor_gpa = tk.StringVar()
 predicted_gpa = tk.StringVar()
 predicted_cor_gpa = tk.StringVar()
 """
-
+"""
 def display_gpa():
   lbl1 = ttk.Label(dis_win, 'Transcript GPA' + str(trans_gpa))
   lbl1.pack()
@@ -64,11 +67,68 @@ def gpa_prediction():
     print("Predicted Core GPA: " + str(predicted_cor_gpa))
   elif choice == 2:
     gpa_data()
-
+"""
 #---------------------Predict Frame--------------------------
 def predict_win():
-    predF = tk.Frame(win, bg='green')
-    predF.place(relwidth=1, relheight=1)
+    global predicted_gpa
+    global predicted_gpa_sem
+    global predicted_cor_gpa
+
+    preF = tk.Frame(win, bg='gray')
+    preF.place(relwidth=1, relheight=1)
+
+    preF.columnconfigure(0, weight=1)
+    preF.columnconfigure(1, weight=1)
+    preF.rowconfigure(0, weight=1)
+    preF.rowconfigure(1, weight=1)
+    preF.rowconfigure(2, weight=1)
+    preF.rowconfigure(3, weight=1)
+
+    preF.tkraise()
+
+    f1 = float(trans_gpa.get())
+    f2 = float(cur_gpa.get())
+    f3 = float(cur_cor_gpa.get())
+
+    predicted_gpa = round(f1*0.75 + f2*0.25, 1)
+
+    predicted_gpa_sem = round(f1*0.88 + f2*0.125, 1)
+
+    predicted_cor_gpa = round(f1*0.75 + f3*0.25, 1)
+
+    
+    finalLbl = ttk.Label(win, text='Predicted Final GPA: ')
+    finalLbl.grid(column=0, row=0, sticky=tk.EW, padx=5, pady=5)
+
+    bum1 = ttk.Label(win, text=predicted_gpa)
+    bum1.grid(column=1, row=0, sticky=tk.EW, padx=5, pady=5)
+
+    finalSemLbl = ttk.Label(win, text='Predicted Final First Semester GPA: ')
+    finalSemLbl.grid(column=0, row=1, sticky=tk.EW, padx=5, pady=5)
+
+    bum2 = ttk.Label(win, text=predicted_gpa_sem)
+    bum2.grid(column=1, row=1, sticky=tk.EW, padx=5, pady=5)
+
+    finalCorLbl = ttk.Label(win, text='Predicted Final Core GPA: ')
+    finalCorLbl.grid(column=0, row=2, sticky=tk.EW, padx=5, pady=5)
+
+    bum3 = ttk.Label(win, text=predicted_cor_gpa)
+    bum3.grid(column=1, row=2, sticky=tk.EW, padx=5, pady=5)
+
+    menuBtn = ttk.Button(win, text='Main Menu', command=main_win)
+    menuBtn.grid(column=0, row=3, sticky=tk.EW, padx=5, pady = 5)
+
+
+    #Equation
+    """
+    * One semester: GPA = transcriptGPA*0.75 + curGPA*0.125
+    * Full Year: GPA = transcriptGPA*0.75 + curGPA*0.25
+    *CORE: transcriptCOREgpa*0.75 + curCorGPA*0.25
+    """
+    
+
+
+
 
 #---------------------Calculate Frame-----------------------
 
@@ -134,14 +194,17 @@ def display_win():
   lbl4 = ttk.Label(win, text='Current Core GPA: ' + cur_cor_gpa.get())
   lbl4.grid(column=0, row=3, sticky=tk.EW, padx=5, pady=5)
 
-  lbl5 = ttk.Label(win, text='Predicted GPA: ' + predicted_gpa.get())
+  lbl5 = ttk.Label(win, text='Current Semester GPA: ' + cur_sem_gpa.get())
   lbl5.grid(column=0, row=4, sticky=tk.EW, padx=5, pady=5)
 
-  lbl6 = ttk.Label(win, text='Predicted Core GPA: ' + predicted_cor_gpa.get())
+  lbl6 = ttk.Label(win, text='Current Semester Core GPA: ' + cur_cor_sem_gpa.get())
   lbl6.grid(column=0, row=5, sticky=tk.EW, padx=5, pady=5)
 
   main_btn = ttk.Button(win, text='Main Menu', command=main_win)
   main_btn.grid(column=0, row=6, sticky=tk.EW, padx=5, pady=5)
+
+  predict_btn = ttk.Button(win, text='Predict GPA', command=predict_win)
+  predict_btn.grid(column=1, row=6, sticky=tk.EW, padx=5, pady=5)
 
 #------------------Function Merge-----------------
 def display():
@@ -150,19 +213,23 @@ def display():
 
 #------------------Input Window--------------------
 def input_win():
+  
   global trans_gpa
   global core_gpa
   global cur_gpa
   global cur_cor_gpa
-  global predicted_gpa
-  global predicted_cor_gpa
+  global cur_sem_gpa
+  global cur_cor_sem_gpa
+  
 
+  """
   trans_gpa = tk.StringVar()
   core_gpa = tk.StringVar()
   cur_gpa = tk.StringVar()
   cur_cor_gpa = tk.StringVar()
-  predicted_gpa = tk.StringVar()
-  predicted_cor_gpa = tk.StringVar()
+  cur_sem_gpa = tk.StringVar()
+  cur_cor_sem_gpa = tk.StringVar()
+  """
 
   inputF = tk.Frame(win, bg='gray')
   inputF.columnconfigure(0, weight=1)
@@ -182,38 +249,38 @@ def input_win():
   trans_lbl = ttk.Label(win, text='Transcript GPA') #lbl
   trans_lbl.grid(column=0, row=0, sticky=tk.EW, padx=5, pady=5)
 
-  trans_textbox = ttk.Entry(win, textvariable = trans_gpa) #txt
-  trans_textbox.grid(column=1, row=0, sticky=tk.EW, padx=5, pady=5)
+  trans_gpa = ttk.Entry(win) #txt
+  trans_gpa.grid(column=1, row=0, sticky=tk.EW, padx=5, pady=5)
 
   core_lbl = ttk.Label(win, text='Core GPA') #lbl
   core_lbl.grid(column=0, row=1, sticky=tk.EW, padx=5, pady=5)
 
-  core_textbox = ttk.Entry(win, textvariable = core_gpa)#txt
-  core_textbox.grid(column=1, row=1, sticky=tk.EW, padx=5, pady=5)
+  core_gpa = ttk.Entry(win)#txt
+  core_gpa.grid(column=1, row=1, sticky=tk.EW, padx=5, pady=5)
 
   cur_lbl = ttk.Label(win, text='Current GPA') #lbl
   cur_lbl.grid(column=0, row=2, sticky=tk.EW, padx=5, pady=5)
 
-  cur_textbox = ttk.Entry(win, textvariable = cur_gpa)
-  cur_textbox.grid(column=1, row=2, sticky=tk.EW, padx=5, pady=5)
+  cur_gpa = ttk.Entry(win)
+  cur_gpa.grid(column=1, row=2, sticky=tk.EW, padx=5, pady=5)
 
   cur_cor_lbl = ttk.Label(win, text='Current Core GPA') #lbl
   cur_cor_lbl.grid(column=0, row=3, sticky=tk.EW, padx=5, pady=5)
 
-  cur_cor_textbox = ttk.Entry(win, textvariable = cur_cor_gpa)
-  cur_cor_textbox.grid(column=1, row=3, sticky=tk.EW, padx=5, pady=5)
+  cur_cor_gpa = ttk.Entry(win)
+  cur_cor_gpa.grid(column=1, row=3, sticky=tk.EW, padx=5, pady=5)
 
-  predict_lbl = ttk.Label(win, text='Predicted GPA') #lbl
-  predict_lbl.grid(column=0, row=4, sticky=tk.EW, padx=5, pady=5)
+  cur_sem_lbl = ttk.Label(win, text='Current Semester GPA') #lbl
+  cur_sem_lbl.grid(column=0, row=4, sticky=tk.EW, padx=5, pady=5)
 
-  predict_textbox = ttk.Entry(win, textvariable = predicted_gpa)
-  predict_textbox.grid(column=1, row=4, sticky=tk.EW, padx=5, pady=5)
+  cur_sem_gpa = ttk.Entry(win)
+  cur_sem_gpa.grid(column=1, row=4, sticky=tk.EW, padx=5, pady=5)
 
-  predict_cor_lbl = ttk.Label(win, text='Predicted Core GPA') #lbl
-  predict_cor_lbl.grid(column=0, row=5, sticky=tk.EW, padx=5, pady=5)
+  cur_cor_sem_lbl = ttk.Label(win, text='Current Core Semester GPA') #lbl
+  cur_cor_sem_lbl.grid(column=0, row=5, sticky=tk.EW, padx=5, pady=5)
 
-  predict_cor_txtbox = ttk.Entry(win, textvariable = predicted_cor_gpa)
-  predict_cor_txtbox.grid(column=1, row=5, sticky=tk.EW, padx=5, pady=5)
+  cur_cor_sem_gpa = ttk.Entry(win)
+  cur_cor_sem_gpa.grid(column=1, row=5, sticky=tk.EW, padx=5, pady=5)
 
   continue_btn = ttk.Button(win, text='Continue', command=display_win)
   continue_btn.grid(column=0, row=6, sticky=tk.EW, padx=5, pady=5)
@@ -221,8 +288,7 @@ def input_win():
   main_btn = ttk.Button(win, text='Main Menu', command=main_win)
   main_btn.grid(column=1, row=6, sticky=tk.EW, padx=5, pady=5)
 
-  predict_btn = ttk.Button(win, text='Predict GPA', command=predict_win)
-  predict_btn.grid(column=2, row=6, sticky=tk.EW, padx=5, pady=5)
+
 
 
 
@@ -234,6 +300,7 @@ def main_win():
   mainF.rowconfigure(0, weight=1)
   mainF.rowconfigure(1, weight=1)
   mainF.rowconfigure(2, weight=1)
+  mainF.rowconfigure(3, weight=1)
   mainF.place(relwidth=1, relheight=1)
 
   mainF.tkraise()
@@ -249,6 +316,7 @@ def main_win():
   calc_btn.grid(column=0, row=2, sticky=tk.EW, padx=5, pady=5)
 
 
+
   
 
 
@@ -260,4 +328,4 @@ win.mainloop()
 
 #options()
 #https://www.pythontutorial.net/tkinter/tkinter-label/
-
+#https://docs.python.org/3/library/tkinter.html# 
